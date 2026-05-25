@@ -1,0 +1,216 @@
+.pageContainer {
+  min-height: 100vh;
+  background: #0f1115;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  font-family: 'Inter', sans-serif;
+  color: #1a1a1a;
+}
+
+.receiptPaper {
+  width: 100%;
+  max-width: 400px;
+  background: #fff;
+  padding: 40px 30px;
+  position: relative;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  /* Jagged edges effect */
+  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.1));
+}
+
+/* Zigzag Pattern Top */
+.receiptPaper::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 0;
+  width: 100%;
+  height: 10px;
+  background: linear-gradient(-135deg, #fff 5px, transparent 0),
+              linear-gradient(135deg, #fff 5px, transparent 0);
+  background-size: 10px 10px;
+}
+
+/* Zigzag Pattern Bottom */
+.receiptPaper::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  width: 100%;
+  height: 10px;
+  background: linear-gradient(-45deg, #fff 5px, transparent 0),
+              linear-gradient(45deg, #fff 5px, transparent 0);
+  background-size: 10px 10px;
+}
+
+
+.header {
+  text-align: center;
+  margin-bottom: 24px;
+  border-bottom: 1px dashed #eee;
+  padding-bottom: 20px;
+}
+
+.storeName {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+  color: #000;
+  text-transform: uppercase;
+}
+
+.storeDetails {
+  font-size: 0.8rem;
+  color: #666;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.storeDetails p {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.gstTag {
+  font-weight: 700;
+  color: #333;
+}
+
+.statusSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.statusBadge {
+  background: #4ade80;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+.orderInfo {
+  font-size: 0.8rem;
+  color: #888;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dot {
+  opacity: 0.3;
+}
+
+.billTable {
+  margin-bottom: 24px;
+}
+
+.tableHeader {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #999;
+  border-bottom: 1px solid #f5f5f5;
+  padding-bottom: 8px;
+  margin-bottom: 12px;
+}
+
+.tableBody {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tableRow {
+  display: grid;
+  grid-template-columns: 1fr 40px 80px;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+.itemName {
+  display: flex;
+  flex-direction: column;
+}
+
+.unitPrice {
+  font-size: 0.75rem;
+  color: #999;
+}
+
+.summarySection {
+  border-top: 2px solid #f5f5f5;
+  padding-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 30px;
+}
+
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.grandTotal {
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: #000;
+  padding-top: 8px;
+  border-top: 1px solid #f5f5f5;
+  margin-top: 4px;
+}
+
+.footer {
+  text-align: center;
+  border-top: 1px dashed #eee;
+  padding-top: 24px;
+}
+
+.paymentMethod {
+  font-size: 0.8rem;
+  color: #999;
+  margin-bottom: 16px;
+}
+
+.thankYou h3 {
+  font-size: 1rem;
+  margin-bottom: 4px;
+}
+
+.thankYou p {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.poweredBy {
+  margin-top: 24px;
+  font-size: 0.65rem;
+  color: #ccc;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.loader, .error {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}

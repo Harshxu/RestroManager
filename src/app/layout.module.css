@@ -1,0 +1,14 @@
+.layoutContainer {
+  display: flex;
+  min-height: 100vh;
+}
+
+.mainContent {
+  flex: 1;
+  margin-left: 240px;
+  padding: 32px;
+  background: radial-gradient(ellipse at 30% 20%, rgba(59,130,246,0.04) 0%, transparent 60%),
+              radial-gradient(ellipse at 70% 80%, rgba(139,92,246,0.03) 0%, transparent 60%),
+              #050505;
+  min-height: 100vh;
+}
