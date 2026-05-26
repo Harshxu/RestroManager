@@ -118,7 +118,43 @@ export default function ManagePage() {
 
   const updateSession = async (reference: string, items: any[]) => {
     if (!user?._id) return;
+    
+    // 1. Optimistic frontend state update for instant, sub-5ms responsiveness
+    const updatedSessions = [...sessions];
+    const sIdx = updatedSessions.findIndex(s => s.reference === reference);
+    const tempSessionId = 'temp-' + Date.now();
+    let currentSession: any = null;
+    
+    if (sIdx > -1) {
+      updatedSessions[sIdx] = { ...updatedSessions[sIdx], items };
+      currentSession = updatedSessions[sIdx];
+    } else {
+      currentSession = { _id: tempSessionId, userId: user._id, reference, items, status: 'active' };
+      updatedSessions.push(currentSession);
+    }
+    setSessions(updatedSessions);
+    
+    // Also optimistically transition floor plan tables to 'occupied' locally
+    if (reference.startsWith('Table ')) {
+      const tableNum = reference.replace('Table ', '');
+      setTables(prevTables => prevTables.map(t => {
+        if (t.number === tableNum) {
+          return { ...t, status: 'occupied', activeSessionId: currentSession._id };
+        }
+        return t;
+      }));
+    }
+
+    if (selectedTable && selectedTable.number === reference.replace('Table ', '')) {
+      setSelectedTable((prev: any) => prev ? {
+        ...prev,
+        status: 'occupied',
+        activeSession: currentSession
+      } : null);
+    }
+
     try {
+      // 2. Perform background DB persistence POST request
       const res = await fetch('/api/active-sessions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -131,20 +167,23 @@ export default function ManagePage() {
       });
 
       if (res.ok) {
-        const fullRes = await fetch(`/api/active-sessions?userId=${user._id}`);
-        const tablesRes = await fetch(`/api/tables?userId=${user._id}`);
-        if (fullRes.ok && tablesRes.ok) {
-          const allSessions = await fullRes.json();
-          setSessions(allSessions);
-          setTables(await tablesRes.json());
-
-          const currentSession = allSessions.find((s: any) => s.reference === reference);
-          if (selectedTable && selectedTable.number === reference.replace('Table ', '')) {
-            setSelectedTable({
-              ...selectedTable,
-              activeSession: currentSession || { reference, items: [] }
-            });
+        const savedSession = await res.json();
+        
+        // Silently swap out temporary frontend session items/IDs with true MongoDB record IDs
+        setSessions(prev => prev.map(s => s.reference === reference ? savedSession : s));
+        
+        setTables(prev => prev.map(t => {
+          if (t.number === reference.replace('Table ', '')) {
+            return { ...t, activeSessionId: savedSession._id };
           }
+          return t;
+        }));
+
+        if (selectedTable && selectedTable.number === reference.replace('Table ', '')) {
+          setSelectedTable((prev: any) => prev ? {
+            ...prev,
+            activeSession: savedSession
+          } : null);
         }
       }
     } catch (error) {

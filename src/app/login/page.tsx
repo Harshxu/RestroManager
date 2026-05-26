@@ -21,7 +21,7 @@ export default function LoginPage() {
   const { login } = useAuth();
   const [users, setUsers] = useState<any[]>([]);
   const [selectedUser, setSelectedUser] = useState<any>(null);
-  const [pin, setPin] = useState('1234');
+  const [pin, setPin] = useState('');
   const [loading, setLoading] = useState(true);
   const [seeding, setSeeding] = useState(false);
   const [error, setError] = useState('');
