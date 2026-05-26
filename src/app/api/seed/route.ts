@@ -11,6 +11,15 @@ export async function GET() {
   try {
     await dbConnect();
     
+    // Safety check: Prevent seeding if data already exists in the database
+    const existingDealersCount = await Dealer.countDocuments();
+    if (existingDealersCount > 0) {
+      return NextResponse.json(
+        { error: 'Database already has active business accounts. Seeding is disabled to prevent accidental production data loss.' }, 
+        { status: 400 }
+      );
+    }
+    
     // Drop old indexes to prevent "email_1 duplicate key" errors from the old schema
     try {
       await User.collection.dropIndexes();
