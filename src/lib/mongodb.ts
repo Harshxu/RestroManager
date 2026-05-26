@@ -6,6 +6,19 @@ if (!MONGODB_URI) {
   throw new Error('Please define the MONGODB_URI environment variable inside .env.local');
 }
 
+// Pre-import all Mongoose models to register them at connection startup
+// This completely prevents "Schema hasn't been registered" errors in dynamic Next.js routes
+import '@/models/Dealer';
+import '@/models/User';
+import '@/models/Table';
+import '@/models/Order';
+import '@/models/ActiveSession';
+import '@/models/RestroInventory';
+import '@/models/RestroMenu';
+import '@/models/StoreInventory';
+import '@/models/Expense';
+import '@/models/Review';
+
 /**
  * Global is used here to maintain a cached connection across hot reloads
  * in development. This prevents connections growing exponentially
