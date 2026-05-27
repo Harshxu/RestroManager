@@ -81,7 +81,7 @@ export async function POST(req: Request) {
 
     // Build context prompt
     const businessContext = `
-You are an expert restaurant business AI analyst embedded inside a Dhaba (Indian roadside restaurant) management system called "OmniBiz".
+You are an expert restaurant business AI analyst embedded inside a Dhaba (Indian roadside restaurant) management system called "Restrofy".
 Your job is to autonomously analyze the real-time business data and provide actionable insights without being asked.
 
 === BUSINESS SNAPSHOT ===

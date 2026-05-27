@@ -28,7 +28,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   useEffect(() => {
-    const savedUser = localStorage.getItem('omnibiz_user');
+    const savedUser = localStorage.getItem('restrofy_user');
     if (savedUser) {
       try {
         const parsedUser = JSON.parse(savedUser);
@@ -44,7 +44,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
               setUser(parsedUser);
             } else {
               // Stale session from old seed, force logout
-              localStorage.removeItem('omnibiz_user');
+              localStorage.removeItem('restrofy_user');
               setUser(null);
               router.push('/login');
             }
@@ -56,7 +56,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             setLoading(false);
           });
       } catch (e) {
-        localStorage.removeItem('omnibiz_user');
+        localStorage.removeItem('restrofy_user');
         setLoading(false);
       }
     } else {
@@ -77,13 +77,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [user, loading, pathname, router]);
 
   const login = (userData: UserType) => {
-    localStorage.setItem('omnibiz_user', JSON.stringify(userData));
+    localStorage.setItem('restrofy_user', JSON.stringify(userData));
     setUser(userData);
     router.push('/');
   };
 
   const logout = () => {
-    localStorage.removeItem('omnibiz_user');
+    localStorage.removeItem('restrofy_user');
     setUser(null);
     router.push('/login');
   };

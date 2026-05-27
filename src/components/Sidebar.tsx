@@ -38,8 +38,8 @@ export default function Sidebar() {
   return (
     <aside className={styles.sidebar}>
       <div className={styles.logo}>
-        <div className={styles.logoIcon}>Ω</div>
-        <span className={styles.logoText}>OmniBiz</span>
+        <div className={styles.logoIcon}>R</div>
+        <span className={styles.logoText}>Restrofy</span>
       </div>
 
       <nav className={styles.nav}>

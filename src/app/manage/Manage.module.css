@@ -95,11 +95,10 @@
 }
 
 .detailsSection {
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
   display: flex;
   flex-direction: column;
+  height: 100%;
+  gap: 16px;
 }
 
 .emptyState {
@@ -109,6 +108,42 @@
   align-items: center;
   justify-content: center;
   color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  padding: 24px;
+}
+
+.kotCard {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.menuCard {
+  height: 320px;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.menuCardTitle {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  font-weight: 600;
 }
 
 .sessionDetails {
@@ -150,8 +185,9 @@
 
 .currentItems {
   flex: 1;
-  overflow-y: auto;
-  margin-bottom: 24px;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .currentItems h3 {
@@ -159,6 +195,30 @@
   color: rgba(255, 255, 255, 0.4);
   text-transform: uppercase;
   margin-bottom: 16px;
+}
+
+.itemsList {
+  max-height: 160px;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+.itemsList::-webkit-scrollbar {
+  width: 6px;
+}
+
+.itemsList::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 4px;
+}
+
+.itemsList::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.itemsList::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
 }
 
 .listItem {
@@ -182,8 +242,10 @@
 }
 
 .addItemSection {
-  padding-top: 24px;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
 }
 
 .searchBar {
@@ -205,7 +267,8 @@
 }
 
 .inventoryScroll {
-  height: 200px;
+  flex: 1;
+  min-height: 0;
   overflow-y: auto;
   display: flex;
   flex-direction: column;

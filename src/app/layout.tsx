@@ -9,7 +9,7 @@ import { headers } from "next/headers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "OmniBiz | Managed SaaS for Retail & Food",
+  title: "Restrofy | Managed SaaS for Retail & Food",
   description: "Next-gen inventory and billing management for Restaurants, Kirana, and Medical stores.",
 };
 

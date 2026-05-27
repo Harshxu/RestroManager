@@ -577,7 +577,7 @@ export default function ReportsPage() {
         <div className="print-header-top">
           <div>
             <h1 className="print-header-title">Business Performance Audit</h1>
-            <p className="print-header-meta"><strong>Authorized Store:</strong> {user?.businessName || 'OmniBiz Store'}</p>
+            <p className="print-header-meta"><strong>Authorized Store:</strong> {user?.businessName || 'Restrofy Store'}</p>
             <p className="print-header-meta"><strong>Operational Type:</strong> {user?.businessType || 'Retail'}</p>
           </div>
           <div className="print-badge">

@@ -153,10 +153,10 @@ export default function LoginPage() {
             fontSize: '1.5rem',
             fontWeight: '800',
             boxShadow: '0 0 20px var(--accent-glow)'
-          }}>Ω</div>
-          <h1 className="text-gradient pulse" style={{ fontSize: '2rem', marginBottom: '8px' }}>OmniBiz</h1>
+          }}>R</div>
+          <h1 className="text-gradient pulse" style={{ fontSize: '2rem', marginBottom: '8px' }}>Restrofy</h1>
           <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.9rem' }}>
-            {isRegistering ? 'Register your business on OmniBiz' : 'Select your business account to continue'}
+            {isRegistering ? 'Register your business on Restrofy' : 'Select your business account to continue'}
           </p>
         </div>
 

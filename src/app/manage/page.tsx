@@ -226,6 +226,21 @@ export default function ManagePage() {
     updateSession(selectedTable.activeSession.reference, sessionItems);
   };
 
+  const updateItemQuantity = (productId: string, amount: number) => {
+    if (!selectedTable || !selectedTable.activeSession) return;
+    const activeSession = selectedTable.activeSession;
+    const sessionItems = (activeSession.items || [])
+      .map((i: any) => {
+        if (String(i.productId) === String(productId)) {
+          const newQty = i.quantity + amount;
+          return { ...i, quantity: newQty };
+        }
+        return i;
+      })
+      .filter((i: any) => i.quantity > 0);
+    updateSession(activeSession.reference, sessionItems);
+  };
+
   const handleShiftTable = async () => {
     if (!selectedTable || !selectedTable.activeSession || !targetTableNum) return;
     try {
@@ -313,7 +328,7 @@ export default function ManagePage() {
   const handleSendWhatsApp = () => {
     if (!lastOrder) return;
 
-    const storeName = user?.businessName || 'Gourmet Kitchen';
+    const storeName = user?.businessName || 'Ganesh Bhojanalay';
     const customerName = lastOrder.customerName || 'Guest';
     const mobile = lastOrder.customerMobile;
     const total = lastOrder.total.toFixed(2);
@@ -341,7 +356,7 @@ export default function ManagePage() {
     if (finalMobile.length === 10) finalMobile = `91${finalMobile}`;
 
     const whatsappUrl = `https://api.whatsapp.com/send?phone=${finalMobile}&text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, 'OmniBizWhatsApp');
+    window.open(whatsappUrl, 'RestrofyWhatsApp');
   };
 
   // EOD inventory calculations — always uses RestroInventory (raw materials)
@@ -539,103 +554,112 @@ export default function ManagePage() {
                 <p>Select a table to manage orders and billing</p>
               </motion.div>
             ) : (
-              <motion.div key="active" className={styles.sessionDetails}>
-                <div className={styles.detailsHeader}>
-                  <div>
-                    <h2 style={{ fontSize: '1.5rem', fontWeight: '800' }}>Table {selectedTable.number}</h2>
-                    <p style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.4)', marginTop: '4px' }}>Section: {selectedTable.section}</p>
+              <motion.div 
+                key="active" 
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 10 }}
+                style={{ display: 'flex', flexDirection: 'column', gap: '16px', height: '100%', minHeight: 0 }}
+              >
+                <div className={styles.kotCard}>
+                  <div className={styles.detailsHeader}>
+                    <div>
+                      <h2 style={{ fontSize: '1.5rem', fontWeight: '800' }}>Table {selectedTable.number}</h2>
+                      <p style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.4)', marginTop: '4px' }}>Section: {selectedTable.section}</p>
+                    </div>
+                    <div style={{ display: 'flex', gap: '8px' }}>
+                      <button 
+                        className="glass-dark" 
+                        onClick={() => setIsShiftOpen(true)}
+                        style={{ 
+                          border: '1px solid rgba(255,255,255,0.1)', 
+                          padding: '10px 14px', 
+                          borderRadius: '10px', 
+                          color: 'white',
+                          fontWeight: '600',
+                          fontSize: '0.85rem',
+                          cursor: 'pointer'
+                        }}
+                        disabled={!selectedTable.activeSession?.items?.length}
+                      >
+                        Shift Table
+                      </button>
+                      <button 
+                        className={styles.checkoutBtn} 
+                        onClick={() => setIsCheckoutOpen(true)} 
+                        disabled={!selectedTable.activeSession?.items?.length}
+                      >
+                        Checkout <Receipt size={16} />
+                      </button>
+                    </div>
                   </div>
-                  <div style={{ display: 'flex', gap: '8px' }}>
-                    <button 
-                      className="glass-dark" 
-                      onClick={() => setIsShiftOpen(true)}
-                      style={{ 
-                        border: '1px solid rgba(255,255,255,0.1)', 
-                        padding: '10px 14px', 
-                        borderRadius: '10px', 
-                        color: 'white',
-                        fontWeight: '600',
-                        fontSize: '0.85rem',
-                        cursor: 'pointer'
-                      }}
-                      disabled={!selectedTable.activeSession?.items?.length}
-                    >
-                      Shift Table
-                    </button>
-                    <button 
-                      className={styles.checkoutBtn} 
-                      onClick={() => setIsCheckoutOpen(true)} 
-                      disabled={!selectedTable.activeSession?.items?.length}
-                    >
-                      Checkout <Receipt size={16} />
-                    </button>
-                  </div>
-                </div>
 
-                <div className={styles.currentItems}>
-                  <h3>Active KOT Items</h3>
-                  {!selectedTable.activeSession?.items?.length ? (
-                    <p style={{ textAlign: 'center', color: 'rgba(255,255,255,0.2)', padding: '20px' }}>No items ordered yet. Add items below!</p>
-                  ) : (
-                    <div className={styles.itemsList}>
-                      {selectedTable.activeSession.items.map((item: any) => (
-                        <div key={item.productId} className={styles.listItem} style={{ flexDirection: 'column', alignItems: 'stretch', gap: '8px' }}>
-                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <div>
-                              <p style={{ fontWeight: '700', fontSize: '1rem', color: 'white' }}>{item.name}</p>
-                              <p style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.4)', marginTop: '2px' }}>₹{item.price} x {item.quantity}</p>
-                            </div>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                              <span style={{ fontWeight: '800', color: 'var(--accent)' }}>₹{item.price * item.quantity}</span>
-                              <button onClick={() => removeItemFromSession(item.productId)} className={styles.removeIcon}><Trash2 size={16} /></button>
-                            </div>
-                          </div>
-                          {/* Dhaba Status Control — hide entirely once Added to Bill */}
-                          {(item.status || 'Order Received') !== 'Added to Bill' ? (
-                            <div style={{ display: 'flex', gap: '8px', marginTop: '4px' }}>
-                              {['Order Received', 'Preparing', 'Added to Bill'].map((status) => {
-                                const isActiveStatus = (item.status || 'Order Received') === status;
-                                const statusColors: Record<string, string> = {
-                                  'Order Received': '#3b82f6',
-                                  'Preparing': '#facc15',
-                                  'Added to Bill': '#4ade80'
-                                };
-                                const color = statusColors[status];
-                                return (
-                                  <button
-                                    key={status}
-                                    onClick={(e) => { e.stopPropagation(); updateItemStatus(String(item.productId), status); }}
+                  <div className={styles.currentItems}>
+                    <h3>Active KOT Items</h3>
+                    {!selectedTable.activeSession?.items?.length ? (
+                      <p style={{ textAlign: 'center', color: 'rgba(255,255,255,0.2)', padding: '20px' }}>No items ordered yet. Add items below!</p>
+                    ) : (
+                      <div className={styles.itemsList}>
+                        {selectedTable.activeSession.items.map((item: any) => (
+                          <div key={item.productId} className={styles.listItem} style={{ flexDirection: 'column', alignItems: 'stretch', gap: '8px' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                              <div>
+                                <p style={{ fontWeight: '700', fontSize: '1rem', color: 'white' }}>{item.name}</p>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '6px' }}>
+                                  <button 
+                                    onClick={() => updateItemQuantity(item.productId, -1)}
                                     style={{
-                                      flex: 1,
-                                      padding: '6px',
-                                      borderRadius: '8px',
-                                      fontSize: '0.7rem',
-                                      fontWeight: '700',
+                                      padding: '2px 8px',
+                                      borderRadius: '6px',
+                                      background: 'rgba(255, 255, 255, 0.05)',
+                                      border: '1px solid rgba(255, 255, 255, 0.1)',
+                                      color: 'white',
                                       cursor: 'pointer',
-                                      border: `1px solid ${isActiveStatus ? color : 'rgba(255,255,255,0.08)'}`,
-                                      background: isActiveStatus ? `${color}22` : 'transparent',
-                                      color: isActiveStatus ? color : 'rgba(255,255,255,0.4)',
-                                      transition: 'all 0.2s'
+                                      fontWeight: 'bold',
+                                      fontSize: '0.85rem',
+                                      userSelect: 'none'
                                     }}
                                   >
-                                    {status}
+                                    -
                                   </button>
-                                );
-                              })}
+                                  <span style={{ color: 'white', fontWeight: 'bold', fontSize: '0.9rem', minWidth: '20px', textAlign: 'center' }}>
+                                    {item.quantity}
+                                  </span>
+                                  <button 
+                                    onClick={() => updateItemQuantity(item.productId, 1)}
+                                    style={{
+                                      padding: '2px 8px',
+                                      borderRadius: '6px',
+                                      background: 'rgba(255, 255, 255, 0.05)',
+                                      border: '1px solid rgba(255, 255, 255, 0.1)',
+                                      color: 'white',
+                                      cursor: 'pointer',
+                                      fontWeight: 'bold',
+                                      fontSize: '0.85rem',
+                                      userSelect: 'none'
+                                    }}
+                                  >
+                                    +
+                                  </button>
+                                  <span style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.4)', marginLeft: '4px' }}>
+                                    x ₹{item.price}
+                                  </span>
+                                </div>
+                              </div>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                <span style={{ fontWeight: '800', color: 'var(--accent)' }}>₹{item.price * item.quantity}</span>
+                                <button onClick={() => removeItemFromSession(item.productId)} className={styles.removeIcon}><Trash2 size={16} /></button>
+                              </div>
                             </div>
-                          ) : (
-                            <div style={{ marginTop: '6px', padding: '4px 10px', borderRadius: '8px', background: 'rgba(74,222,128,0.12)', border: '1px solid #4ade8050', display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '0.72rem', fontWeight: '700', color: '#4ade80' }}>
-                              ✓ Added to Bill
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
 
-                {/* Add new items to order */}
-                <div className={styles.addItemSection}>
+                <div className={styles.menuCard}>
+                  <h3 className={styles.menuCardTitle}>Add New Items</h3>
                   <div className={styles.searchBar}>
                     <Search size={18} color="rgba(255,255,255,0.4)" />
                     <input type="text" placeholder="Add dish (e.g. Dal, Naan, Paneer)..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />

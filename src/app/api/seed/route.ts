@@ -41,10 +41,11 @@ export async function GET() {
 
     // Create Dealers
     const restoDealer = await Dealer.create({
-      storeName: 'Gourmet Kitchen',
+      storeName: 'Ganesh Bhojanalay',
       businessType: 'Restaurant',
       ownerName: 'Chef Rahul',
-      ownerPhone: '9876543210',
+      ownerPhone: '9680826565',
+      address: 'Jyoti Nagar',
     });
 
     const kiranaDealer = await Dealer.create({
@@ -63,9 +64,9 @@ export async function GET() {
 
     // Create Users (Owners)
     await User.create([
-      { username: 'restaurant@omnibiz.com', password: '1234', name: 'Gourmet Kitchen', phone: '9876543210', role: 'Owner', dealerId: restoDealer._id },
-      { username: 'kirana@omnibiz.com', password: '1234', name: 'Sharma Kirana', phone: '9876543211', role: 'Owner', dealerId: kiranaDealer._id },
-      { username: 'medical@omnibiz.com', password: '1234', name: 'Apollo Pharmacy', phone: '9876543212', role: 'Owner', dealerId: medDealer._id },
+      { username: 'restaurant@restrofy.com', password: '1234', name: 'Ganesh Bhojanalay', phone: '9680826565', role: 'Owner', dealerId: restoDealer._id },
+      { username: 'kirana@restrofy.com', password: '1234', name: 'Sharma Kirana', phone: '9876543211', role: 'Owner', dealerId: kiranaDealer._id },
+      { username: 'medical@restrofy.com', password: '1234', name: 'Apollo Pharmacy', phone: '9876543212', role: 'Owner', dealerId: medDealer._id },
     ]);
 
     // 3. Seed Inventory & Menu

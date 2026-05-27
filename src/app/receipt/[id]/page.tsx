@@ -38,10 +38,10 @@ export default function PublicReceiptPage() {
     <div className={styles.pageContainer}>
       <div className={styles.receiptPaper}>
         <div className={styles.header}>
-          <h1 className={styles.storeName}>{store?.businessName || 'OmniBiz Store'}</h1>
+          <h1 className={styles.storeName}>{store?.businessName || 'Restrofy Store'}</h1>
           <div className={styles.storeDetails}>
-            <p><MapPin size={12} /> {store?.businessAddress || store?.location || 'Digital Service'}</p>
-            <p><Phone size={12} /> {store?.phone || '+91 XXXXXXXXXX'}</p>
+            <p><MapPin size={12} /> {store?.businessAddress || store?.location || 'Jyoti Nagar'}</p>
+            <p><Phone size={12} /> {store?.phone || '9680826565'}</p>
             {store?.gstNumber && <p className={styles.gstTag}>GSTIN: {store.gstNumber}</p>}
           </div>
         </div>
@@ -101,7 +101,7 @@ export default function PublicReceiptPage() {
               <p>Please visit us again</p>
            </div>
            <div className={styles.poweredBy}>
-              Powered by OmniBiz SaaS
+              Powered by Restrofy
            </div>
         </div>
       </div>
